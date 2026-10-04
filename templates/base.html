@@ -1,0 +1,61 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}NOVA — Premium Store{% endblock %}</title>
+    <meta name="description" content="NOVA — a modern Django e-commerce store.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+<header class="site-header">
+    <div class="container nav-wrap">
+        <a href="{% url 'store:home' %}" class="brand">NOVA<span>•</span></a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+        <nav id="mainNav">
+            <a href="{% url 'store:home' %}">Home</a>
+            <a href="{% url 'store:product_list' %}">Store</a>
+            {% if user.is_staff %}<a href="{% url 'dashboard:home' %}">Dashboard</a>{% endif %}
+            {% if user.is_authenticated %}
+                <a href="{% url 'store:account' %}">Account</a>
+                <a href="{% url 'store:logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'store:login' %}">Sign in</a>
+            {% endif %}
+            <a class="bag-link" href="{% url 'store:cart' %}">Bag <span id="bagCount">{{ request.session.cart|length|default:0 }}</span></a>
+        </nav>
+    </div>
+</header>
+
+{% if messages %}
+<div class="container flash-wrap">
+    {% for message in messages %}
+    <div class="flash {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<main>{% block content %}{% endblock %}</main>
+
+<footer class="footer">
+    <div class="container footer-grid">
+        <div>
+            <div class="brand footer-brand">NOVA<span>•</span></div>
+            <p>Thoughtfully designed technology and everyday essentials.</p>
+        </div>
+        <div><h4>Store</h4><a href="{% url 'store:product_list' %}">All products</a><a href="{% url 'store:product_list' %}?category=phones">Phones</a><a href="{% url 'store:product_list' %}?category=laptops">Laptops</a></div>
+        <div><h4>Account</h4><a href="{% url 'store:account' %}">My account</a><a href="{% url 'store:cart' %}">Shopping bag</a></div>
+        <div><h4>Admin</h4><a href="/django-admin/">Django Admin</a>{% if user.is_staff %}<a href="{% url 'dashboard:home' %}">Store Dashboard</a>{% endif %}</div>
+    </div>
+    <div class="container footer-bottom">© 2026 NOVA Store. Built with Python & Django.</div>
+</footer>
+
+<script src="{% static 'js/app.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

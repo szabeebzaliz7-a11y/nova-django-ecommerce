@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Shopping Bag — NOVA{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="container"><p class="eyebrow">Your bag</p><h1>Ready when you are.</h1></div></section>
+<section class="section"><div class="container cart-list">
+{% for product in products %}
+<div class="cart-row"><div class="cart-thumb">{% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}">{% endif %}</div><div><h3>{{ product.name }}</h3><p>{{ product.category.name }}</p></div><strong>₹{{ product.price|floatformat:0 }}</strong><a href="{% url 'store:remove_from_cart' product.pk %}" class="remove-link">Remove</a></div>
+{% empty %}<div class="empty-state"><h2>Your bag is empty.</h2><p>Explore the store and add something you love.</p><a href="{% url 'store:product_list' %}" class="btn btn-dark">Browse store</a></div>{% endfor %}
+{% if products %}<div class="cart-note">Demo bag: products are stored in the Django session. Checkout/payment is intentionally outside the assignment scope.</div>{% endif %}
+</div></section>
+{% endblock %}

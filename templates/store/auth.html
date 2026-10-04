@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{% if mode == 'login' %}Sign in{% else %}Create account{% endif %} — NOVA{% endblock %}
+{% block content %}
+<section class="auth-page"><div class="auth-card">
+<p class="eyebrow">NOVA Account</p><h1>{% if mode == "login" %}Welcome back.{% else %}Create your account.{% endif %}</h1>
+<form method="post" class="form-stack">{% csrf_token %}{{ form.as_p }}<button class="btn btn-dark full">{% if mode == "login" %}Sign in{% else %}Create account{% endif %}</button></form>
+<p class="form-switch">{% if mode == "login" %}New here? <a href="{% url 'store:register' %}">Create an account</a>{% else %}Already registered? <a href="{% url 'store:login' %}">Sign in</a>{% endif %}</p>
+</div></section>
+{% endblock %}

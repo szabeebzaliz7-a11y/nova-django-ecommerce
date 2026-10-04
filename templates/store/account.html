@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}My Account — NOVA{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="container"><p class="eyebrow">Your account</p><h1>Hello, {{ user.first_name|default:user.username }}.</h1><p>Manage your account and shopping experience.</p></div></section>
+<section class="section"><div class="container account-grid"><div class="account-card"><span>Username</span><strong>{{ user.username }}</strong></div><div class="account-card"><span>Email</span><strong>{{ user.email|default:"Not provided" }}</strong></div><div class="account-card"><span>Member since</span><strong>{{ user.date_joined|date:"M Y" }}</strong></div><div class="account-card"><a class="btn btn-outline" href="{% url 'store:logout' %}">Sign out</a></div></div></section>
+{% endblock %}

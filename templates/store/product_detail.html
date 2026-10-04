@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} — NOVA{% endblock %}
+{% block content %}
+<section class="section product-detail">
+<div class="container detail-grid">
+    <div class="detail-image">{% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}">{% else %}<div class="image-placeholder large">NOVA</div>{% endif %}</div>
+    <div class="detail-content">
+        <p class="eyebrow">{{ product.category.name }}</p>
+        <h1>{{ product.name }}</h1>
+        <p class="detail-price">₹{{ product.price|floatformat:0 }}</p>
+        <p class="detail-description">{{ product.description }}</p>
+        <div class="spec-row"><span>Availability</span><strong>{% if product.stock > 0 %}In stock{% else %}Out of stock{% endif %}</strong></div>
+        <div class="spec-row"><span>Category</span><strong>{{ product.category.name }}</strong></div>
+        {% if product.stock > 0 %}
+        <form method="post" action="{% url 'store:add_to_cart' product.pk %}" class="detail-actions">{% csrf_token %}<input type="hidden" name="next" value="{{ product.get_absolute_url }}"><button class="btn btn-dark">Add to bag</button><a class="btn btn-outline" href="{% url 'store:cart' %}">View bag</a></form>
+        {% endif %}
+    </div>
+</div>
+</section>
+{% if related %}
+<section class="section muted"><div class="container"><div class="section-heading"><h2>You may also like</h2></div><div class="product-grid">{% for p in related %}<article class="product-card"><a href="{{ p.get_absolute_url }}" class="product-image">{% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.name }}">{% else %}<div class="image-placeholder">NOVA</div>{% endif %}</a><div class="product-info"><h3>{{ p.name }}</h3><strong>₹{{ p.price|floatformat:0 }}</strong></div></article>{% endfor %}</div></div></section>
+{% endif %}
+{% endblock %}

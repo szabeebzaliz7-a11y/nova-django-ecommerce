@@ -1,0 +1,5 @@
+{% extends "dashboard/base.html" %}
+{% block heading %}Banners{% endblock %}
+{% block content %}
+<div class="dash-panel"><div class="panel-head"><h2>Homepage banners</h2><a class="dash-btn" href="{% url 'dashboard:banner_add' %}">+ Add banner</a></div><div class="banner-admin-grid">{% for banner in banners %}<article class="banner-admin-card">{% if banner.image %}<img src="{{ banner.image.url }}" alt="{{ banner.title }}">{% endif %}<div><p class="eyebrow">{{ banner.subtitle }}</p><h3>{{ banner.title }}</h3><p>{{ banner.content|truncatechars:120 }}</p><span class="status {% if banner.is_active %}active{% endif %}">{% if banner.is_active %}Enabled{% else %}Disabled{% endif %}</span><div class="admin-actions"><a href="{% url 'dashboard:banner_edit' banner.pk %}">Edit</a><a class="danger" href="{% url 'dashboard:banner_delete' banner.pk %}">Delete</a></div></div></article>{% empty %}<p>No banners yet.</p>{% endfor %}</div></div>
+{% endblock %}

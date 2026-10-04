@@ -1,0 +1,6 @@
+{% extends "dashboard/base.html" %}
+{% block heading %}Overview{% endblock %}
+{% block content %}
+<div class="stats"><div class="stat"><span>Total products</span><strong>{{ product_count }}</strong></div><div class="stat"><span>Active products</span><strong>{{ active_product_count }}</strong></div><div class="stat"><span>Categories</span><strong>{{ category_count }}</strong></div><div class="stat"><span>Users</span><strong>{{ user_count }}</strong></div></div>
+<div class="dash-panel"><div class="panel-head"><h2>Recent products</h2><a class="dash-btn" href="{% url 'dashboard:product_add' %}">+ Add product</a></div><div class="table-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Status</th></tr></thead><tbody>{% for product in recent_products %}<tr><td>{{ product.name }}</td><td>{{ product.category.name }}</td><td>₹{{ product.price|floatformat:0 }}</td><td>{% if product.is_active %}<span class="status active">Active</span>{% else %}<span class="status">Hidden</span>{% endif %}</td></tr>{% endfor %}</tbody></table></div></div>
+{% endblock %}

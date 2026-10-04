@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}NOVA — Think different. Shop better.{% endblock %}
+{% block content %}
+
+<section class="hero">
+    {% if banners %}
+    <div class="hero-slider" id="heroSlider">
+        {% for banner in banners %}
+        <article class="hero-slide {% if forloop.first %}active{% endif %}" style="--hero-image: url('{{ banner.image.url }}')">
+            <div class="hero-overlay"></div>
+            <div class="container hero-content">
+                <p class="eyebrow">{{ banner.subtitle }}</p>
+                <h1>{{ banner.title }}</h1>
+                <p class="hero-copy">{{ banner.content }}</p>
+                <a class="btn btn-light" href="{{ banner.button_url }}">{{ banner.button_text }} <span>→</span></a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <article class="hero-slide active hero-fallback">
+        <div class="container hero-content">
+            <p class="eyebrow">The latest collection</p>
+            <h1>Power. Simplicity.<br>Made for you.</h1>
+            <p class="hero-copy">Explore premium devices with a clean, effortless shopping experience.</p>
+            <a class="btn btn-light" href="{% url 'store:product_list' %}">Shop now →</a>
+        </div>
+    </article>
+    {% endif %}
+    {% if banners|length > 1 %}
+    <div class="slider-dots" id="sliderDots">
+        {% for banner in banners %}<button class="{% if forloop.first %}active{% endif %}" data-slide="{{ forloop.counter0 }}"></button>{% endfor %}
+    </div>
+    {% endif %}
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">Explore the collection</p><h2>What are you looking for?</h2></div><a class="text-link" href="{% url 'store:product_list' %}">View all →</a></div>
+        <div class="category-grid">
+            {% for category in categories %}
+            <a href="{% url 'store:product_list' %}?category={{ category.slug }}" class="category-card">
+                <span>{{ forloop.counter|stringformat:"02d" }}</span><h3>{{ category.name }}</h3><p>{{ category.description|truncatechars:90 }}</p>
+            </a>
+            {% empty %}
+            <a href="{% url 'store:product_list' %}" class="category-card"><span>01</span><h3>Everything</h3><p>Discover the complete collection.</p></a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section muted">
+    <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">Handpicked</p><h2>Featured products</h2></div><a class="text-link" href="{% url 'store:product_list' %}">Shop all →</a></div>
+        <div class="product-grid">
+            {% for product in featured_products %}
+            <article class="product-card">
+                <a href="{{ product.get_absolute_url }}" class="product-image">
+                    {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}">{% else %}<div class="image-placeholder">NOVA</div>{% endif %}
+                </a>
+                <div class="product-info">
+                    <div><p class="product-category">{{ product.category.name }}</p><h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3></div>
+                    <strong>₹{{ product.price|floatformat:0 }}</strong>
+                </div>
+                <form method="post" action="{% url 'store:add_to_cart' product.pk %}">
+                    {% csrf_token %}<input type="hidden" name="next" value="{{ product.get_absolute_url }}">
+                    <button class="btn btn-dark full">Add to bag</button>
+                </form>
+            </article>
+            {% empty %}
+            <div class="empty-state">Add featured products from the dashboard.</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="promo">
+    <div class="container promo-inner">
+        <div><p class="eyebrow">Designed for the everyday</p><h2>Less clutter.<br>More possibility.</h2><p>Clean design, thoughtful details and products selected for how you actually live.</p><a href="{% url 'store:product_list' %}" class="btn btn-dark">Explore products →</a></div>
+        <div class="promo-orb"><span>NOVA</span></div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% load static %}
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard — NOVA</title><link rel="stylesheet" href="{% static 'css/dashboard.css' %}"></head>
+<body>
+<aside class="sidebar"><a class="dash-brand" href="{% url 'dashboard:home' %}">NOVA<span>•</span></a><nav><a href="{% url 'dashboard:home' %}">Overview</a><a href="{% url 'dashboard:products' %}">Products</a><a href="{% url 'dashboard:categories' %}">Categories</a><a href="{% url 'dashboard:banners' %}">Banners</a><a href="/django-admin/">Django Admin</a><a href="{% url 'store:home' %}">View Store</a></nav></aside>
+<main class="dash-main"><div class="dash-top"><div><p class="eyebrow">Store management</p><h1>{% block heading %}Dashboard{% endblock %}</h1></div><span class="admin-pill">{{ request.user.username }}</span></div>{% if messages %}{% for message in messages %}<div class="dash-message">{{ message }}</div>{% endfor %}{% endif %}{% block content %}{% endblock %}</main>
+</body></html>

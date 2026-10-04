@@ -1,0 +1,5 @@
+{% extends "dashboard/base.html" %}
+{% block heading %}Products{% endblock %}
+{% block content %}
+<div class="dash-panel"><div class="panel-head"><h2>Product catalogue</h2><a class="dash-btn" href="{% url 'dashboard:product_add' %}">+ Add product</a></div><div class="table-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th></th></tr></thead><tbody>{% for product in products %}<tr><td><div class="table-product">{% if product.image %}<img src="{{ product.image.url }}" alt="">{% endif %}{{ product.name }}</div></td><td>{{ product.category.name }}</td><td>₹{{ product.price|floatformat:0 }}</td><td>{{ product.stock }}</td><td>{% if product.is_active %}<span class="status active">Active</span>{% else %}<span class="status">Hidden</span>{% endif %}</td><td><a href="{% url 'dashboard:product_edit' product.pk %}">Edit</a> · <a class="danger" href="{% url 'dashboard:product_delete' product.pk %}">Delete</a></td></tr>{% empty %}<tr><td colspan="6">No products yet.</td></tr>{% endfor %}</tbody></table></div></div>
+{% endblock %}
